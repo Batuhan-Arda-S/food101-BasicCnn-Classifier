@@ -8,8 +8,9 @@ This project focuses on large-scale food image classification across 101 categor
 
 The training pipeline was designed to improve generalization and training stability through advanced augmentation and regularization techniques.
 
+## Visual Results
+![Classifier 2](classifier2.png)
 ## Model Architecture
-
 Custom CNN architecture including:
 
 - 5 convolutional blocks
