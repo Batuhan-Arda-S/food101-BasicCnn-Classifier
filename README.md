@@ -1,5 +1,5 @@
 # Food101 Image Classification
-
+![Classifier 1](classifier1.png)
 A deep learning image classification project built with PyTorch using a custom Convolutional Neural Network trained from scratch on the Food-101 dataset.
 
 ## Project Overview
