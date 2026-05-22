@@ -17,6 +17,7 @@ The training pipeline was designed to improve generalization and training stabil
 <p align="center">
   <img src="classifier4.png" width="750"/>
 </p>
+
 ## Model Architecture
 Custom CNN architecture including:
 
