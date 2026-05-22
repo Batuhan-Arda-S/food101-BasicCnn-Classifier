@@ -1,115 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GourmetFinder | Food101 CNN Classifier</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <div class="background-grid"></div>
-    <div class="blob-1"></div>
-    <div class="blob-2"></div>
-
-    <main class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="logo">
-                <i class="fa-solid fa-utensils logo-icon"></i>
-                <h1>Gourmet<span>Finder</span></h1>
-            </div>
-            <p class="subtitle">Identify your food in seconds with the advanced FoodCNN deep learning model trained on the Food101 dataset.</p>
-        </header>
-
-        <!-- Main Workspace -->
-        <div class="workspace">
-            <!-- Left Side: Upload Section -->
-            <section class="card upload-card">
-                <h2 class="card-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo</h2>
-                
-                <div class="upload-zone" id="uploadZone">
-                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
-                    
-                    <div class="upload-prompt" id="uploadPrompt">
-                        <div class="pulse-icon">
-                            <i class="fa-solid fa-image-portrait"></i>
-                        </div>
-                        <h3>Drag & drop an image or click to select</h3>
-                        <p>PNG, JPG, or JPEG (Max. 10MB)</p>
-                        <button class="btn btn-primary" id="selectBtn">Select File</button>
-                    </div>
-
-                    <div class="preview-container" id="previewContainer" style="display: none;">
-                        <img id="imagePreview" src="" alt="Uploaded Food">
-                        <button class="btn-clear" id="clearBtn" title="Remove Image">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="action-bar">
-                    <button class="btn btn-success w-full" id="predictBtn" disabled>
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Food
-                    </button>
-                </div>
-            </section>
-
-            <!-- Right Side: Results Section -->
-            <section class="card results-card">
-                <h2 class="card-title"><i class="fa-solid fa-chart-simple"></i> Analysis Results</h2>
-                
-                <!-- Initial Empty State -->
-                <div class="empty-state" id="emptyState">
-                    <i class="fa-solid fa-circle-question empty-icon"></i>
-                    <h3>No Results Yet</h3>
-                    <p>Please upload a food photo in the left panel and click analyze to start.</p>
-                </div>
-
-                <!-- Loading State -->
-                <div class="loading-state" id="loadingState" style="display: none;">
-                    <div class="spinner-container">
-                        <div class="spinner"></div>
-                    </div>
-                    <h3>Analyzing Image...</h3>
-                    <div class="trivia-box">
-                        <p class="trivia-label"><i class="fa-solid fa-lightbulb"></i> Did you know?</p>
-                        <p id="triviaText" class="trivia-text">Our model was trained on the massive Food101 dataset containing 101 distinct food classes.</p>
-                    </div>
-                </div>
-
-                <!-- Prediction Results -->
-                <div class="prediction-results" id="predictionResults" style="display: none;">
-                    <div class="primary-prediction">
-                        <span class="badge">Top Prediction</span>
-                        <h3 id="topPredictionName">Pizza</h3>
-                        <div class="confidence-badge" id="topPredictionConfidence">98.5%</div>
-                    </div>
-
-                    <div class="other-predictions">
-                        <h4 class="section-subtitle">Most Likely Matches</h4>
-                        <div class="predictions-list" id="predictionsList">
-                            <!-- JS will inject results here -->
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Footer -->
-        <footer class="app-footer">
-            <p>&copy; 2026 GourmetFinder AI. All rights reserved.</p>
-            <p class="tech-stack">PyTorch &bull; Flask &bull; Food101 CNN</p>
-        </footer>
-    </main>
-
-    <!-- Custom JS -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GourmetFinder | Food101 CNN Classifier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="background-grid"></div>
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+    <main class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <i class="fa-solid fa-utensils logo-icon"></i>
+                <h1>Gourmet<span>Finder</span></h1>
+            </div>
+            <p class="subtitle">Identify your food in seconds with the advanced FoodCNN deep learning model trained on the Food101 dataset.</p>
+        </header>
+        <div class="workspace">
+            <section class="card upload-card">
+                <h2 class="card-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo</h2>
+                <div class="upload-zone" id="uploadZone">
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    <div class="upload-prompt" id="uploadPrompt">
+                        <div class="pulse-icon">
+                            <i class="fa-solid fa-image-portrait"></i>
+                        </div>
+                        <h3>Drag & drop an image or click to select</h3>
+                        <p>PNG, JPG, or JPEG (Max. 10MB)</p>
+                        <button class="btn btn-primary" id="selectBtn">Select File</button>
+                    </div>
+                    <div class="preview-container" id="previewContainer" style="display: none;">
+                        <img id="imagePreview" src="" alt="Uploaded Food">
+                        <button class="btn-clear" id="clearBtn" title="Remove Image">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="action-bar">
+                    <button class="btn btn-success w-full" id="predictBtn" disabled>
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Food
+                    </button>
+                </div>
+            </section>
+            <section class="card results-card">
+                <h2 class="card-title"><i class="fa-solid fa-chart-simple"></i> Analysis Results</h2>
+                <div class="empty-state" id="emptyState">
+                    <i class="fa-solid fa-circle-question empty-icon"></i>
+                    <h3>No Results Yet</h3>
+                    <p>Please upload a food photo in the left panel and click analyze to start.</p>
+                </div>
+                <div class="loading-state" id="loadingState" style="display: none;">
+                    <div class="spinner-container">
+                        <div class="spinner"></div>
+                    </div>
+                    <h3>Analyzing Image...</h3>
+                    <div class="trivia-box">
+                        <p class="trivia-label"><i class="fa-solid fa-lightbulb"></i> Did you know?</p>
+                        <p id="triviaText" class="trivia-text">Our model was trained on the massive Food101 dataset containing 101 distinct food classes.</p>
+                    </div>
+                </div>
+                <div class="prediction-results" id="predictionResults" style="display: none;">
+                    <div class="primary-prediction">
+                        <span class="badge">Top Prediction</span>
+                        <h3 id="topPredictionName">Pizza</h3>
+                        <div class="confidence-badge" id="topPredictionConfidence">98.5%</div>
+                    </div>
+                    <div class="other-predictions">
+                        <h4 class="section-subtitle">Most Likely Matches</h4>
+                        <div class="predictions-list" id="predictionsList">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer class="app-footer">
+            <p>&copy; 2026 GourmetFinder AI. All rights reserved.</p>
+            <p class="tech-stack">PyTorch &bull; Flask &bull; Food101 CNN</p>
+        </footer>
+    </main>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
 </html>

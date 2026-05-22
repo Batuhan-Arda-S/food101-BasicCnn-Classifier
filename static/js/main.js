@@ -1,4 +1,3 @@
-// Food Trivia Array for Loading Experience
 const FOOD_TRIVIA = [
     "Our model was trained on the massive Food101 dataset containing 101 distinct food classes.",
     "Baklava is a rich, sweet dessert pastry made of layers of filo filled with chopped nuts and sweetened with syrup, popularized in Ottoman Palace cuisine.",
@@ -10,7 +9,6 @@ const FOOD_TRIVIA = [
     "The earliest forms of ice cream date back to ancient China, where a frozen mixture of milk and rice was eaten."
 ];
 
-// Elements
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
 const selectBtn = document.getElementById('selectBtn');
@@ -32,9 +30,8 @@ const predictionsList = document.getElementById('predictionsList');
 let selectedFile = null;
 let triviaInterval = null;
 
-// Trigger file select
 selectBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // Prevent trigger uploadZone click
+    e.stopPropagation(); 
     fileInput.click();
 });
 
@@ -44,10 +41,8 @@ uploadZone.addEventListener('click', () => {
     }
 });
 
-// File input change
 fileInput.addEventListener('change', handleFileSelect);
 
-// Drag & Drop
 uploadZone.addEventListener('dragover', (e) => {
     e.preventDefault();
     uploadZone.classList.add('dragover');
@@ -72,13 +67,11 @@ uploadZone.addEventListener('drop', (e) => {
     }
 });
 
-// Clear selection
 clearBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     resetUpload();
 });
 
-// Reset function
 function resetUpload() {
     selectedFile = null;
     fileInput.value = '';
@@ -87,14 +80,12 @@ function resetUpload() {
     uploadPrompt.style.display = 'block';
     predictBtn.disabled = true;
     
-    // Reset results pane to empty state
     emptyState.style.display = 'flex';
     loadingState.style.display = 'none';
     predictionResults.style.display = 'none';
     clearInterval(triviaInterval);
 }
 
-// File Select handler
 function handleFileSelect() {
     if (fileInput.files.length > 0) {
         selectedFile = fileInput.files[0];
@@ -110,7 +101,6 @@ function handleFileSelect() {
     }
 }
 
-// Predict Action
 predictBtn.addEventListener('click', analyzeImage);
 
 function startTriviaRotation() {
@@ -130,18 +120,15 @@ function startTriviaRotation() {
 function analyzeImage() {
     if (!selectedFile) return;
 
-    // Show loading state
     emptyState.style.display = 'none';
     predictionResults.style.display = 'none';
     loadingState.style.display = 'flex';
     
     startTriviaRotation();
     
-    // Prepare data
     const formData = new FormData();
     formData.append('file', selectedFile);
     
-    // API Request
     fetch('/predict', {
         method: 'POST',
         body: formData
@@ -170,18 +157,14 @@ function analyzeImage() {
 }
 
 function displayResults(predictions) {
-    // Hide loading
     loadingState.style.display = 'none';
     
-    // Display results panel
     predictionResults.style.display = 'flex';
     
-    // Primary Prediction (Index 0)
     const primary = predictions[0];
     topPredictionName.textContent = primary.class_name;
     topPredictionConfidence.textContent = `${(primary.probability * 100).toFixed(1)}%`;
     
-    // Other predictions list (Top-5 breakdown)
     predictionsList.innerHTML = '';
     
     predictions.forEach((pred, index) => {
@@ -202,7 +185,6 @@ function displayResults(predictions) {
         
         predictionsList.appendChild(row);
         
-        // Trigger reflow for progress bar animation
         setTimeout(() => {
             row.querySelector('.progress-fill').style.width = `${percentage}%`;
         }, 50 + (index * 50));

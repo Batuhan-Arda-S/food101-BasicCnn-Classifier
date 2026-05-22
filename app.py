@@ -8,11 +8,9 @@ import io
 
 app = Flask(__name__)
 
-# Device configuration
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
-# Define the CNN Model Architecture exactly as provided by the user
 class FoodCNN(nn.Module):
     def __init__(self):
         super().__init__()
@@ -76,7 +74,6 @@ class FoodCNN(nn.Module):
         x = self.classifier(x)
         return x
 
-# Initialize and load model
 model = FoodCNN()
 model_path = "Food101_CNN_Classification_Model.pth"
 
@@ -93,7 +90,6 @@ else:
 model.to(device)
 model.eval()
 
-# Test transforms matching the training script exactly
 test_transform = transforms.Compose([
     transforms.Resize(256),
     transforms.CenterCrop(224),
@@ -104,7 +100,6 @@ test_transform = transforms.Compose([
     )
 ])
 
-# Food101 Classes List (alphabetical order matching torchvision)
 FOOD101_CLASSES = [
     'apple_pie', 'baby_back_ribs', 'baklava', 'beef_carpaccio', 'beef_tartare',
     'beet_salad', 'beignets', 'bibimbap', 'bread_pudding', 'breakfast_burrito',
@@ -143,19 +138,15 @@ def predict():
         return jsonify({"error": "No file selected"}), 400
     
     try:
-        # Read the image
         img_bytes = file.read()
         image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
         
-        # Apply transformation
         tensor = test_transform(image).unsqueeze(0).to(device)
         
-        # Inference
         with torch.no_grad():
             outputs = model(tensor)
             probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
             
-        # Get top-5 predictions
         top5_prob, top5_catid = torch.topk(probabilities, 5)
         
         predictions = []
@@ -163,7 +154,6 @@ def predict():
             prob = top5_prob[i].item()
             class_name = FOOD101_CLASSES[top5_catid[i].item()]
             
-            # Format label (e.g., "baby_back_ribs" -> "Baby Back Ribs")
             display_name = " ".join([word.capitalize() for word in class_name.split("_")])
             
             predictions.append({
@@ -181,5 +171,4 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    # Run server locally on port 5000
     app.run(host="0.0.0.0", port=5000, debug=True)
